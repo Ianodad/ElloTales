@@ -27,6 +27,7 @@ export const resolvers = {
   Mutation: {
     addBookToReadingList: (_parent: unknown, args: { book: Book }) => {
       const { book } = args;
+      console.log(book);
       const readingList = readReadingListData();
       readingList.push(book);
       writeReadingListData(readingList);

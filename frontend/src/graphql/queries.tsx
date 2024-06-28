@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { Book } from '../constants/types';
 
 export const GET_BOOKS = gql`
   query GetBooks($offset: Int, $limit: Int, $sort: Boolean) {
@@ -7,6 +8,7 @@ export const GET_BOOKS = gql`
       author
       coverPhotoURL
       readingLevel
+      inReadList @client
     }
   }
 `;

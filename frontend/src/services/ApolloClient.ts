@@ -3,8 +3,11 @@ import {
   from,
   HttpLink,
   InMemoryCache,
+  makeVar,
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
+import { GET_READING_LIST, resolvers } from '../graphql/queries';
+import { Book } from '../constants/types';
 
 const URL = 'http://localhost:4000/';
 
@@ -25,13 +28,31 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 // Define the HTTP link for connecting to your GraphQL server
 const httpLink = new HttpLink({
-  uri: URL, 
+  uri: URL,
+});
+export const readingListVar = makeVar([]);
+
+const cache = new InMemoryCache({
+  typePolicies: {
+    Book: {
+      fields: {
+        inReadList: {
+          read(_, { readField, toReference, cache }) {
+            const title = readField('title');
+            const readListBooks =
+              cache.readQuery({ query: GET_READING_LIST })?.readingList || [];
+            return readListBooks?.some((item: Book) => item.title === title);
+          },
+        },
+      },
+    },
+  },
 });
 
 // Create the Apollo Client instance
 const client = new ApolloClient({
   link: from([errorLink, httpLink]),
-  cache: new InMemoryCache(),
+  cache,
   defaultOptions: {
     watchQuery: {
       fetchPolicy: 'cache-first',

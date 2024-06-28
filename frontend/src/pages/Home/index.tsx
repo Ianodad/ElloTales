@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { MainLayout } from '@components/index';
-import { useQuery, useLazyQuery } from '@apollo/client';
-import { GET_BOOKS, SEARCH_BOOKS } from '@graphql/queries';
+import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
+import {
+  GET_BOOKS,
+  SEARCH_BOOKS,
+  ADD_BOOK_TO_READING_LIST,
+} from '@graphql/queries';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import {
   Box,
@@ -16,6 +20,7 @@ import {
   Autocomplete,
 } from '@mui/material';
 import { Book } from '@constants/types';
+import useElloTalesStore from '@/src/store';
 
 const Home = () => {
   const [offset, setOffset] = useState(0);
@@ -42,17 +47,26 @@ const Home = () => {
       variables: { title: searchQuery },
     });
 
+  const [addBookToReadingList, { loading: loadingReadList }] = useMutation(
+    ADD_BOOK_TO_READING_LIST
+  );
+
+  const { readListBooks, addBooksToReadList } = useElloTalesStore((state) => ({
+    readListBooks: state.readListBooks,
+    addBooksToReadList: state.addBooksToReadList,
+  }));
+
   useEffect(() => {
     if (someBooks) {
       setBooks(someBooks.books);
     }
-  }, [someBooks]);
+  }, [someBooks, readListBooks]);
 
   useEffect(() => {
     if (moreBookData) {
       setBooks((prevBooks) => [...prevBooks, ...moreBookData.books]);
     }
-  }, [moreBookData]);
+  }, [moreBookData, readListBooks]);
 
   const handleLoadMore = () => {
     setOffset((prevOffset) => prevOffset + 10);
@@ -63,6 +77,22 @@ const Home = () => {
     setTriggerSearch(true);
     if (searchQuery) {
       searchBooks({ variables: { title: searchQuery } });
+    }
+  };
+
+  const handleAddBook = async (book: Book) => {
+    const { __typename, inReadList, ...bookInput } = book;
+
+    try {
+      const response = await addBookToReadingList({
+        variables: { book: bookInput },
+      });
+      console.log('response', response);
+      if (response.data?.addBookToReadingList) {
+        await addBooksToReadList(response.data.addBookToReadingList);
+      }
+    } catch (err) {
+      console.error('Error adding book to reading list:', err);
     }
   };
 
@@ -129,94 +159,97 @@ const Home = () => {
           </Button>
         </Box>
         <Grid container spacing={4}>
-          {books.map(
-            (book: {
-              title: string;
-              author: string;
-              readingLevel: string;
-              coverPhotoURL: string;
-            }) => (
-              <Grid item xs={12} sm={6} md={3} lg={3} key={book.title}>
-                <Card
+          {books.map((book, index) => (
+            <Grid item xs={12} sm={6} md={3} lg={3} key={index}>
+              <Card
+                sx={{
+                  borderTopLeftRadius: 16, // Customize radius as needed
+                  borderBottomRightRadius: 16, // Customize radius as needed
+                  borderTopRightRadius: 0,
+                  borderBottomLeftRadius: 0,
+                  p: 2,
+                  mb: 0,
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={book.coverPhotoURL}
+                  alt={book.title}
                   sx={{
-                    borderTopLeftRadius: 16, // Customize radius as needed
-                    borderBottomRightRadius: 16, // Customize radius as needed
-                    borderTopRightRadius: 0,
-                    borderBottomLeftRadius: 0,
-                    p: 2,
-                    mb: 0,
+                    objectFit: 'fill',
+                    borderTopRightRadius: 16, // Customize radius as needed
+                    borderBottomLeftRadius: 16, // Customize radius as needed
+                    borderBottomRightRadius: 0,
+                    borderTopLeftRadius: 0,
+                    boxShadow:
+                      '0 4px 6px rgba(0,0,0,.15), 0 2px 4px rgba(0,0,0,.1)',
                   }}
-                >
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image={book.coverPhotoURL}
-                    alt={book.title}
+                />
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h6"
+                    component="div"
                     sx={{
-                      objectFit: 'fill',
-                      borderTopRightRadius: 16, // Customize radius as needed
-                      borderBottomLeftRadius: 16, // Customize radius as needed
-                      borderBottomRightRadius: 0,
-                      borderTopLeftRadius: 0,
-                      boxShadow:
-                        '0 4px 6px rgba(0,0,0,.15), 0 2px 4px rgba(0,0,0,.1)',
-                    }}
-                  />
-                  <CardContent>
-                    <Typography
-                      gutterBottom
-                      variant="h6"
-                      component="div"
-                      sx={{
-                        display: '-webkit-box',
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden',
-                      }}
-                    >
-                      {book.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="secondary.contrastText"
-                      component="p"
-                    >
-                      Author: {book.author}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      color="secondary.contrastText"
-                      component="p"
-                    >
-                      Reading Level: {book.readingLevel}
-                    </Typography>
-                  </CardContent>
-                  <CardActions
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-end',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                      overflow: 'hidden',
                     }}
                   >
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      sx={{
-                        backgroundColor: 'primary.main',
-                        color: 'primary.contrastText',
-                        '&:hover': {
-                          backgroundColor: 'primary.dark',
-                        },
-                      }}
-                    >
-                      Add to Reading List
-                      <AutoStoriesIcon sx={{ marginRight: 1, mt: 1 }} />
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            )
-          )}
+                    {book.title}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="secondary.contrastText"
+                    component="p"
+                  >
+                    Author: {book.author}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="secondary.contrastText"
+                    component="p"
+                  >
+                    Reading Level: {book.readingLevel}
+                  </Typography>
+                </CardContent>
+                <CardActions
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-end',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{
+                      backgroundColor: 'primary.main',
+                      color: 'primary.contrastText',
+                      '&:hover': {
+                        backgroundColor: 'primary.dark',
+                      },
+                    }}
+                    onClick={() => handleAddBook(book)}
+                    disabled={
+                      loadingReadList ||
+                      readListBooks?.some(
+                        (readBook) => readBook.title === book.title
+                      )
+                      // || book.inReadList
+                    }
+                  >
+                    {book.inReadList
+                      ? 'already in reading list'
+                      : 'Add to Reading List'}
+                    <AutoStoriesIcon sx={{ marginRight: 1, mt: 1 }} />
+                  </Button>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
         </Grid>
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
           <Button

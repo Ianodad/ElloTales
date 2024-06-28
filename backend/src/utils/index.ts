@@ -16,6 +16,7 @@ export const readReadingListData = (): Book[] => {
 
 export const writeReadingListData = (data: Book[]): void => {
   try {
+    console.log('book', data);
     fs.writeFileSync(readingListFilePath, JSON.stringify(data, null, 2));
   } catch (err) {
     console.error('Error writing reading list data:', err);
