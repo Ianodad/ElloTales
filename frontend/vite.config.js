@@ -9,6 +9,8 @@ export default defineConfig({
   plugins: [react(), viteTsconfigPaths()],
   server: {
     port: 3000,
+    strictPort: true,
+    host: true,
   },
   // base: '/',
   // resolve: {
