@@ -1,10 +1,27 @@
+---
+
 ![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Status](https://img.shields.io/badge/status-active-success.svg)
 
 ## ELLOTALES
 
-This is a book assignment admin facing ui for a teacher to assign books to students and readling list.
+This is a book assignment admin-facing UI for a teacher to assign books to students and manage the reading list.
 
 ## Table of Contents
+
+- [ELLOTALES](#ellotales)
+- [Table of Contents](#table-of-contents)
+- [Features](#features)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Steps](#steps)
+- [Usage](#usage)
+- [Technology Stack](#technology-stack)
+  - [Frontend Stack](#frontend-stack)
+  - [Backend Stack](#backend-stack)
+  - [Root Directory Technology](#root-directory-technology)
+- [Building and running in Docker Compose](#building-and-running-in-docker-compose)
+- [License](#license)
+- [Contact](#contact)
 
 ## Features
 
@@ -25,7 +42,7 @@ This is a book assignment admin facing ui for a teacher to assign books to stude
 1. Clone the repository:
    ```sh
    git clone https://github.com/Ianodad/ElloTales.git
-   cd your-project
+   cd ElloTales
    ```
 2. Install dependencies:
    Install the root directory dependency
@@ -39,7 +56,7 @@ This is a book assignment admin facing ui for a teacher to assign books to stude
 
 ## Usage
 
-Run both the frontend and backend simultaneously with on command
+Run both the frontend and backend simultaneously with one command
 
 ```sh
 npm run start:both
@@ -47,7 +64,7 @@ npm run start:both
 
 ## Technology Stack
 
-#### FrontEnd Stack
+### Frontend Stack
 
 - [React](https://reactjs.org/): JavaScript library for building user interfaces.
 - [React Router](https://reactrouter.com/): Declarative routing for React applications.
@@ -63,16 +80,16 @@ npm run start:both
 - [Prettier](https://prettier.io/): Opinionated code formatter.
 - [Tailwind CSS](https://tailwindcss.com/): Utility-first CSS framework for rapidly building custom designs.
 
-  #### Backend Stack
+### Backend Stack
 
 - [Apollo Server](https://www.apollographql.com/docs/apollo-server/): A fully-featured GraphQL server.
 - [GraphQL](https://graphql.org/): Query language for APIs and a runtime for executing those queries.
 
-#### Root Directory Technology
+### Root Directory Technology
 
 - [Concurrently](https://www.npmjs.com/package/concurrently): Run multiple commands concurrently.
 
-## Building and running in Docker compose
+## Building and running in Docker Compose
 
 ```sh
 docker-compose up --build
@@ -87,3 +104,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Author**: Ian Adera
 - **Email**: ianodad@gmail.com
 - **GitHub**: [ianodad](https://github.com/ianodad)
+
+---
