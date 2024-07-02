@@ -60,7 +60,7 @@ export const ReadListSidebar = () => {
 
   return (
     <Box width={250} padding={2}>
-      <Typography variant="h6">Reading List</Typography>
+      <Typography variant="h6">READING LIST</Typography>
       <List>
         {readListBooks.length > 0 ? (
           readListBooks.map((book: Book, index: number) => (

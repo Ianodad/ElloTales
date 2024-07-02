@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { MainLayout } from '@components/index';
+import {
+  MainLayout,
+  BookDetailCard,
+  MainHeader,
+  SearchBar,
+} from '@components/index';
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
 import {
   GET_BOOKS,
@@ -7,19 +12,11 @@ import {
   ADD_BOOK_TO_READING_LIST,
 } from '@graphql/queries';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import {
-  Box,
-  Typography,
-  Button,
-  Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  CardActions,
-  TextField,
-  Autocomplete,
-} from '@mui/material';
+import { Box, Button, Grid, IconButton, Badge } from '@mui/material';
+
 import { Book } from '@constants/types';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+
 import useElloTalesStore from '@/src/store';
 
 const Home = () => {
@@ -28,6 +25,7 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [triggerSearch, setTriggerSearch] = useState(false);
+  // const [isSidebarVisible, toggleSidebar] = useSidebar();
 
   const {
     loading,
@@ -51,9 +49,18 @@ const Home = () => {
     ADD_BOOK_TO_READING_LIST
   );
 
-  const { readListBooks, addBooksToReadList } = useElloTalesStore((state) => ({
+  const {
+    readListBooks,
+    addBooksToReadList,
+    isSidebarVisible,
+    toggleSidebar,
+    readingListNewCacheCount,
+  } = useElloTalesStore((state) => ({
     readListBooks: state.readListBooks,
     addBooksToReadList: state.addBooksToReadList,
+    isSidebarVisible: state.isSidebarVisible,
+    toggleSidebar: state.toggleSidebar,
+    readingListNewCacheCount: state.readingListNewCacheCount,
   }));
 
   useEffect(() => {
@@ -129,125 +136,35 @@ const Home = () => {
   return (
     <MainLayout>
       <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" sx={{ mb: 2 }}>
-          Book List
-        </Typography>
-        <Box sx={{ display: 'flex', mb: 4 }}>
-          <Autocomplete
-            freeSolo
-            options={suggestions}
-            onInputChange={fetchSuggestions}
-            // onChange={handleSearch}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="outlined"
-                label="Search by title"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                sx={{ mr: 2, width: '400px' }}
-              />
-            )}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <SearchBar
+            suggestions={suggestions}
+            setSearchQuery={setSearchQuery}
+            searchQuery={searchQuery}
+            fetchSuggestions={fetchSuggestions}
+            handleSearch={handleSearch}
+            loadingSearch={loadingSearch}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleSearch(null, searchQuery)}
-            disabled={loadingSearch}
-          >
-            {loadingSearch ? 'Searching...' : 'Search'}
-          </Button>
+          <BookListIcon
+            toggleSidebar={toggleSidebar}
+            readingListNewCacheCount={readingListNewCacheCount}
+          />
         </Box>
         <Grid container spacing={4}>
           {books.map((book, index) => (
             <Grid item xs={12} sm={6} md={3} lg={3} key={index}>
-              <Card
-                sx={{
-                  borderTopLeftRadius: 16, // Customize radius as needed
-                  borderBottomRightRadius: 16, // Customize radius as needed
-                  borderTopRightRadius: 0,
-                  borderBottomLeftRadius: 0,
-                  p: 2,
-                  mb: 0,
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={book.coverPhotoURL}
-                  alt={book.title}
-                  sx={{
-                    objectFit: 'fill',
-                    borderTopRightRadius: 16, // Customize radius as needed
-                    borderBottomLeftRadius: 16, // Customize radius as needed
-                    borderBottomRightRadius: 0,
-                    borderTopLeftRadius: 0,
-                    boxShadow:
-                      '0 4px 6px rgba(0,0,0,.15), 0 2px 4px rgba(0,0,0,.1)',
-                  }}
-                />
-                <CardContent>
-                  <Typography
-                    gutterBottom
-                    variant="h6"
-                    component="div"
-                    sx={{
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    {book.title}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="secondary.contrastText"
-                    component="p"
-                  >
-                    Author: {book.author}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="secondary.contrastText"
-                    component="p"
-                  >
-                    Reading Level: {book.readingLevel}
-                  </Typography>
-                </CardContent>
-                <CardActions
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-end',
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{
-                      backgroundColor: 'primary.main',
-                      color: 'primary.contrastText',
-                      '&:hover': {
-                        backgroundColor: 'primary.dark',
-                      },
-                    }}
-                    onClick={() => handleAddBook(book)}
-                    disabled={
-                      loadingReadList ||
-                      readListBooks?.some(
-                        (readBook) => readBook.title === book.title
-                      )
-                      // || book.inReadList
-                    }
-                  >
-                    {book.inReadList
-                      ? 'already in reading list'
-                      : 'Add to Reading List'}
-                    <AutoStoriesIcon sx={{ marginRight: 1, mt: 1 }} />
-                  </Button>
-                </CardActions>
-              </Card>
+              <BookDetailCard
+                book={book}
+                handleAddBook={handleAddBook}
+                loadingReadList={loadingReadList}
+                readListBooks={readListBooks}
+              />
             </Grid>
           ))}
         </Grid>
@@ -267,3 +184,64 @@ const Home = () => {
 };
 
 export default Home;
+
+interface BookListIconProps {
+  toggleSidebar: () => void;
+  readingListNewCacheCount: number;
+}
+const BookListIcon = ({
+  toggleSidebar,
+  readingListNewCacheCount,
+}: BookListIconProps) => {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '16px',
+        backgroundColor: 'primary.main',
+        width: '60px',
+        height: '60px',
+        marginLeft: '12px',
+        border: '3px solid black',
+        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+        position: 'relative',
+        cursor: 'pointer',
+        '&:hover': {
+          backgroundColor: 'white',
+          border: '2.8px solid black',
+          borderRadius: '10px',
+          boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.4)',
+          transition: 'background-color 0.2s, box-shadow 0.2s',
+        },
+        '&:hover .bookListButton': {
+          color: 'primary.main',
+          fontSize: '38px',
+          transition: 'color 0.2s, font-size 0.2s',
+        },
+      }}
+    >
+      <IconButton
+        className="bookListButton"
+        onClick={() => toggleSidebar()}
+        sx={{
+          fontSize: '34px',
+          width: '20px',
+          color: 'primary.contrastText',
+        }}
+      >
+        <AutoStoriesIcon fontSize="inherit" />
+      </IconButton>
+      <Badge
+        badgeContent={readingListNewCacheCount}
+        color="secondary"
+        sx={{
+          position: 'absolute',
+          top: 4,
+          right: 4,
+        }}
+      ></Badge>
+    </Box>
+  );
+};

@@ -28,9 +28,8 @@ const theme = createTheme({
       disabled: '#28B8B8', // Turquoise dark 2
     },
     background: {
-      default: '#FFFFFF', // White
+      default: '#CFFAFA', // White
     },
-    
   },
   typography: {
     fontFamily: 'Mulish, Roboto, Arial, sans-serif',

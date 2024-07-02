@@ -7,7 +7,7 @@ import client from '@services/ApolloClient.ts';
 import Home from '@pages/Home';
 import theme from './theme';
 
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider, CssBaseline, GlobalStyles } from '@mui/material';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +18,10 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
+      <CssBaseline />
+      {/* <GlobalStyles
+        styles={{ body: { backgroundColor: theme.palette.background.default } }}
+      /> */}
       <ApolloProvider client={client}>
         <RouterProvider router={router} />
       </ApolloProvider>

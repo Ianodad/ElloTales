@@ -27,9 +27,7 @@ const useElloTalesStore = create<Store>()(
         }),
         {
           name: 'ello-tales',
-          onRehydrateStorage: (state) => {
-            console.error('State on hydrate', state);
-          },
+          onRehydrateStorage: (state) => {},
         }
       )
     )
@@ -37,4 +35,3 @@ const useElloTalesStore = create<Store>()(
 );
 
 export default useElloTalesStore;
-
