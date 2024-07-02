@@ -10,6 +10,7 @@ import {
   Typography,
   Drawer,
   Button,
+  IconButton,
   ListItemSecondaryAction,
 } from '@mui/material';
 import { Book } from '@/src/constants/types';
@@ -18,6 +19,7 @@ import {
   GET_READING_LIST,
 } from '@/src/graphql/queries';
 import { useMutation } from '@apollo/client';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export const ReadListSidebar = () => {
   const { readListBooks, addToReadList } = useElloTalesStore((state) => ({
@@ -59,29 +61,72 @@ export const ReadListSidebar = () => {
   };
 
   return (
-    <Box width={250} padding={2}>
-      <Typography variant="h6">READING LIST</Typography>
-      <List>
+    <Box width={300} padding={2}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        mt={1}
+        mb={1}
+      >
+        <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+          READING LIST
+        </Typography>
+      </Box>
+      <List style={{ gap: '16px' }}>
         {readListBooks.length > 0 ? (
           readListBooks.map((book: Book, index: number) => (
-            <ListItem key={index}>
+            <ListItem
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '3px solid black',
+                borderRadius: '16px',
+                boxShadow: '0px 3px 6px 2px #5a5a5a',
+                backgroundColor: 'info.main',
+                padding: '16px',
+                marginBottom: '8px',
+              }}
+              key={index}
+            >
               <ListItemAvatar>
-                <Avatar src={book.coverPhotoURL} alt={book.title} />
+                <Avatar
+                  sx={{ width: 50, height: 50 }}
+                  style={{
+                    border: 'solid 3px',
+                    borderColor: 'black',
+                    borderStyle: 'solid',
+                    borderWidth: '3px',
+                    display: 'inline-block',
+                  }}
+                  src={book.coverPhotoURL}
+                  alt={book.title}
+                />
               </ListItemAvatar>
               <ListItemText
                 primary={book.title}
-                secondary={`${book.author} - Level: ${book.readingLevel}`}
+                style={{ marginRight: '22px' }}
               />
               <ListItemSecondaryAction>
-                <Button
-                  variant="contained"
+                <IconButton
                   color="error"
                   onClick={() => {
                     handleDeleteBookReadingList(book.title);
                   }}
+                  sx={{
+                    fontSize: '20px',
+                    '&:hover': {
+                      backgroundColor: 'error.main',
+                      color: 'white',
+                      fontSize: '23px',
+                      transition:
+                        'background-color 0.2s, color 0.2s, font-size 0.2s',
+                    },
+                  }}
                 >
-                  Delete
-                </Button>
+                  <DeleteIcon fontSize="inherit" />
+                </IconButton>
               </ListItemSecondaryAction>
             </ListItem>
           ))
