@@ -8,6 +8,8 @@ import {
 import React from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import SearchIcon from '@mui/icons-material/Search';
+import { makeStyles } from '@mui/styles';
+
 interface SearchBarProps {
   suggestions: string[];
   searchQuery: string;
@@ -16,6 +18,7 @@ interface SearchBarProps {
   handleSearch: (event: React.ChangeEvent<{}>, value: string) => void;
   loadingSearch: boolean;
 }
+
 export const SearchBar = ({
   suggestions,
   searchQuery,
@@ -24,6 +27,8 @@ export const SearchBar = ({
   handleSearch,
   loadingSearch,
 }: SearchBarProps) => {
+  const classes = useStyles();
+
   return (
     <Box
       sx={{
@@ -33,10 +38,20 @@ export const SearchBar = ({
         padding: '2rem 0',
       }}
     >
+      <Box></Box>
       <Autocomplete
         freeSolo
         options={suggestions}
         onInputChange={fetchSuggestions}
+        sx={{
+          '.MuiAutocomplete-inputRoot': {
+            borderRadius: '14px',
+            border: '2px black solid',
+            '&:hover': {
+              border: '2px solid blue', // Change the border color on hover
+            },
+          },
+        }}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -46,7 +61,9 @@ export const SearchBar = ({
             onChange={(e) => setSearchQuery(e.target.value)}
             sx={{
               mr: 2,
-              width: '400px',
+              width: '20em',
+              maxWidth: '23em',
+              minWidth: '20em',
               border: '3px solid black',
               borderRadius: '16px',
               fontWeight: 'bold',

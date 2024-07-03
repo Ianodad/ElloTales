@@ -158,7 +158,7 @@ const Home = () => {
         </Box>
         <Grid container spacing={4}>
           {books.map((book, index) => (
-            <Grid item xs={12} sm={6} md={3} lg={3} key={index}>
+            <Grid item xs={6} sm={6} md={3} lg={3} key={index}>
               <BookDetailCard
                 book={book}
                 handleAddBook={handleAddBook}

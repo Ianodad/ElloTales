@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { booksData } from '../data/books';
 import { readReadingListData, writeReadingListData } from '../utils/index';
 import { Book } from '../constants/types';
@@ -19,7 +20,9 @@ export const resolvers = {
     booksSearch: (_parent: unknown, args: { title: string }) => {
       const { title } = args;
       return title
-        ? booksData.filter((book) => book.title.includes(title))
+        ? booksData.filter((book) =>
+            book.title.toLowerCase().includes(title.toLowerCase())
+          )
         : booksData;
     },
     readingList: () => readReadingListData(),
