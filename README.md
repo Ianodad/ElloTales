@@ -21,7 +21,7 @@ This is a book assignment admin-facing UI for a teacher to assign books to stude
   - [Root Directory Technology](#root-directory-technology)
 - [Building and running in Docker Compose](#building-and-running-in-docker-compose)
 - [Screenshots](#screenshots)
-  - [Dashboard View](#dashboard-view)
+  - [Home view](#home-view)
 - [License](#license)
 - [Contact](#contact)
 
@@ -102,7 +102,7 @@ docker-compose up --build
 
 ## Screenshots
 
-### Dashboard View
+### Home view
 ![Dashboard](screenshots/screenshot-home.png)
 
 ## License
