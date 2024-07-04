@@ -20,6 +20,8 @@ This is a book assignment admin-facing UI for a teacher to assign books to stude
   - [Backend Stack](#backend-stack)
   - [Root Directory Technology](#root-directory-technology)
 - [Building and running in Docker Compose](#building-and-running-in-docker-compose)
+- [Screenshots](#screenshots)
+  - [Dashboard View](#dashboard-view)
 - [License](#license)
 - [Contact](#contact)
 
@@ -62,6 +64,9 @@ Run both the frontend and backend simultaneously with one command
 npm run start:both
 ```
 
+The frontend will be available at [http://localhost:3000](http://localhost:3000)
+The backend will be available at [http://localhost:4000](http://localhost:4000)
+
 ## Technology Stack
 
 ### Frontend Stack
@@ -94,6 +99,11 @@ npm run start:both
 ```sh
 docker-compose up --build
 ```
+
+## Screenshots
+
+### Dashboard View
+![Dashboard](screenshots/screenshot-home.png)
 
 ## License
 

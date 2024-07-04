@@ -13,6 +13,8 @@ import {
 } from '@graphql/queries';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { Box, Button, Grid, IconButton, Badge } from '@mui/material';
+import { Refresh, MoreHoriz } from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
 
 import { Book } from '@constants/types';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -168,15 +170,58 @@ const Home = () => {
             </Grid>
           ))}
         </Grid>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-          <Button
-            variant="contained"
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            mt: 4,
+          }}
+        >
+          <IconButton
             color="primary"
             onClick={handleLoadMore}
             disabled={loadingMore}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '38px',
+              width: '60px',
+              height: '60px',
+              borderRadius: '200px',
+              backgroundColor: 'primary.main',
+              border: '3px solid black',
+              boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+              '&:hover': {
+                border: '2.8px solid black',
+                boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.4)',
+              },
+              '&:hover .inner-icon': {
+                fontSize: '42px',
+                transition: 'color 0.2s, font-size 0.2s',
+              },
+            }}
           >
-            {loadingMore ? 'Loading...' : 'Load More'}
-          </Button>
+            {loadingMore ? (
+              <Refresh
+                className="inner-icon"
+                sx={{
+                  fontSize: '58px',
+                  color: 'secondary.main',
+                  width: '20px',
+                }}
+              />
+            ) : (
+              <AddIcon
+                className="inner-icon"
+                fontSize="inherit"
+                sx={{
+                  color: 'secondary.main',
+                }}
+              />
+            )}
+          </IconButton>
         </Box>
       </Box>
     </MainLayout>

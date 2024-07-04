@@ -27,8 +27,6 @@ export const SearchBar = ({
   handleSearch,
   loadingSearch,
 }: SearchBarProps) => {
-  const classes = useStyles();
-
   return (
     <Box
       sx={{
