@@ -6,11 +6,10 @@ export interface bookStateSlice {
   readListBooks: Book[];
   isSidebarVisible: boolean;
   readingListNewCacheCount: number;
-  addToReadList?: (book: Book) => Promise<boolean>;
+  addToReadList: (book: Book) => boolean;
   addBooksToReadList: (books: Book[]) => void;
   toggleSidebar: () => void;
 }
-
 
 /**
  * Create independent slice
@@ -22,15 +21,17 @@ const bookStoreSlice: Slice<bookStateSlice> = (set, get) => ({
   readListBooks: [],
   readingListNewCacheCount: 0,
   isSidebarVisible: false,
-  addToReadList: async (book) => {
+  addToReadList: (book: Book) => {
     const newReadList = [...get().readListBooks, book];
-    set({ readListBooks: newReadList });
+    set({
+      readListBooks: newReadList,
+      readingListNewCacheCount: get().readingListNewCacheCount + 1,
+    });
     return true;
   },
   addBooksToReadList: (books: Book[]) =>
     set((state) => ({
       readListBooks: books,
-      readingListNewCacheCount: state.readingListNewCacheCount + 1,
     })),
   toggleSidebar: () =>
     set((state) => ({

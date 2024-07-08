@@ -36,14 +36,24 @@ export const resolvers = {
       writeReadingListData(readingList);
       return readingList;
     },
-    deleteBookFromReadingList: (_parent: never, args: { title: string }) => {
-      const { title } = args;
-      const readingList = readReadingListData();
-      const updatedReadingList = readingList.filter(
-        (book: Book) => book.title !== title
-      );
-      writeReadingListData(updatedReadingList);
-      return updatedReadingList;
+    deleteBookFromReadingList: (
+      _parent: never,
+      { title }: { title: string }
+    ) => {
+      try {
+        const readingList = readReadingListData();
+
+        const updatedReadingList = readingList.filter(
+          (book: Book) => book.title !== title
+        );
+
+        writeReadingListData(updatedReadingList);
+
+        return updatedReadingList;
+      } catch (error) {
+        console.error('Error deleting book from reading list:', error);
+        throw new Error('Unable to delete book from reading list.');
+      }
     },
   },
 };

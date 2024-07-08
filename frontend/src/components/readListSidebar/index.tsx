@@ -22,41 +22,29 @@ import { useMutation } from '@apollo/client';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export const ReadListSidebar = () => {
-  const { readListBooks, addToReadList } = useElloTalesStore((state) => ({
+  const { addBooksToReadList, readListBooks } = useElloTalesStore((state) => ({
+    addBooksToReadList: state.addBooksToReadList,
     readListBooks: state.readListBooks,
-    addToReadList: state.addToReadList,
   }));
 
   const [deleteBookFromReadingList, { loading }] = useMutation(
     DELETE_BOOK_FROM_READING_LIST
   );
-  const setReadListBooks = useElloTalesStore(
-    (state) => state.addBooksToReadList
-  );
-  console.log(readListBooks);
 
   const handleDeleteBookReadingList = async (title: string) => {
+    // Optimistically update the state
+    const optimisticNewBooks = readListBooks.filter(
+      (book: Book) => book.title !== title
+    );
+    addBooksToReadList(optimisticNewBooks);
+
     try {
       const response = await deleteBookFromReadingList({
         variables: { title },
-        update: (cache, { data: { deleteBookFromReadingList } }) => {
-          const existingBooks =
-            cache.readQuery({ query: GET_READING_LIST }).readingList || [];
-          const newBooks = existingBooks.filter(
-            (book: Book) => book.title !== title
-          );
-          cache.writeQuery({
-            query: GET_READING_LIST,
-            data: { readingList: newBooks },
-          });
-
-          // Update Zustand store
-          console.log('newBooks', newBooks);
-          setReadListBooks(newBooks);
-        },
       });
     } catch (err) {
       console.error('Error deleting book from reading list:', err);
+      addBooksToReadList(readListBooks);
     }
   };
 

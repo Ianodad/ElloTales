@@ -25,7 +25,7 @@ export const MainHeader = () => {
         },
       }}
     >
-      ELLOTALES
+      ElloTales
     </Typography>
   );
 };

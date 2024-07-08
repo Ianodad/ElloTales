@@ -53,13 +53,13 @@ const Home = () => {
 
   const {
     readListBooks,
-    addBooksToReadList,
+    addToReadList,
     isSidebarVisible,
     toggleSidebar,
     readingListNewCacheCount,
   } = useElloTalesStore((state) => ({
     readListBooks: state.readListBooks,
-    addBooksToReadList: state.addBooksToReadList,
+    addToReadList: state.addToReadList,
     isSidebarVisible: state.isSidebarVisible,
     toggleSidebar: state.toggleSidebar,
     readingListNewCacheCount: state.readingListNewCacheCount,
@@ -91,17 +91,23 @@ const Home = () => {
 
   const handleAddBook = async (book: Book) => {
     const { __typename, inReadList, ...bookInput } = book;
+    console.log('bookInput', bookInput);
+
+    // Optimistically update the state
+    addToReadList(bookInput);
 
     try {
       const response = await addBookToReadingList({
         variables: { book: bookInput },
       });
       console.log('response', response);
-      if (response.data?.addBookToReadingList) {
-        await addBooksToReadList(response.data.addBookToReadingList);
-      }
     } catch (err) {
       console.error('Error adding book to reading list:', err);
+
+      // Revert the optimistic update if the server request fails
+      addToReadList((state: any[]) =>
+        state.filter((b: { title: string; }) => b.title !== bookInput.title)
+      );
     }
   };
 
@@ -115,7 +121,7 @@ const Home = () => {
     setTriggerSearch(false);
   }, [searchData, triggerSearch]);
 
-  const fetchSuggestions = async (event, value) => {
+  const fetchSuggestions = async (event: any, value: any) => {
     if (value) {
       const { data: suggestionData } = await searchBooks({
         variables: { title: value },
