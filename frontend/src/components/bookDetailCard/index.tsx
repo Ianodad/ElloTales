@@ -24,7 +24,7 @@ export const BookDetailCard = ({
   loadingReadList,
   readListBooks,
 }: BookDetailCard) => {
-  const isInReadList = readListBooks.some((item) => item.title === book.title);
+  const isInReadList = readListBooks?.some((item) => item?.title === book?.title);
   return (
     <Card
       sx={{

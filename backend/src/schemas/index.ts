@@ -12,6 +12,10 @@ export const typeDefs = `#graphql
   coverPhotoURL: String!
   readingLevel: String!
  }
+ type ClearReadingListResponse {
+  success: Boolean!
+  message: String
+}
  
   type Query {
     books(offset: Int, limit: Int, sort: Boolean): [Book]
@@ -22,5 +26,6 @@ export const typeDefs = `#graphql
   type Mutation {
   addBookToReadingList(book: BookInput!): [Book!]!
   deleteBookFromReadingList(title: String!): [Book!]!
+  clearReadingList: ClearReadingListResponse
 }
 `;

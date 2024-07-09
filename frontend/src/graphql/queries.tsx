@@ -56,3 +56,13 @@ export const DELETE_BOOK_FROM_READING_LIST = gql`
     }
   }
 `;
+
+// add mutation to clearReadingList
+export const CLEAR_READING_LIST = gql`
+  mutation ClearReadingList {
+    clearReadingList {
+      success
+      message
+    }
+  }
+`;

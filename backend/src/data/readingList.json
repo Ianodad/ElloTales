@@ -1,8 +1,14 @@
 [
   {
-    "title": "Happy Monster and the Lost World",
-    "author": "Addison Smith",
+    "title": "Clever Monster on the Wonder Island",
+    "author": "Jordan Jones",
     "coverPhotoURL": "assets/image10.webp",
-    "readingLevel": "E"
+    "readingLevel": "I"
+  },
+  {
+    "title": "Happy Knight and the Magic Spell",
+    "author": "Quinn Brown",
+    "coverPhotoURL": "assets/image10.webp",
+    "readingLevel": "I"
   }
 ]

@@ -7,6 +7,7 @@ const readingListFilePath = path.join(__dirname, '../data/readingList.json');
 export const readReadingListData = (): Book[] => {
   try {
     const data = fs.readFileSync(readingListFilePath, 'utf8');
+    console.log(data);
     return JSON.parse(data);
   } catch (err) {
     console.error('Error reading reading list data:', err);

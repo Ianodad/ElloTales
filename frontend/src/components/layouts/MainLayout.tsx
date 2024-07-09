@@ -32,7 +32,16 @@ export const MainLayout = ({ children }) => {
         <Box className="content" flexGrow={2}>
           {children}
         </Box>
-        <Drawer anchor="right" open={isSidebarVisible} onClose={toggleSidebar}>
+        <Drawer
+          anchor="right"
+          open={isSidebarVisible}
+          onClose={toggleSidebar}
+          sx={{
+            '& .MuiDrawer-paper': {
+              borderLeft: 'solid 3px black',
+            },
+          }}
+        >
           <ReadListSidebar />
         </Drawer>
         {/* <Button

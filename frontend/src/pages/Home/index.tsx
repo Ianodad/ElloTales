@@ -53,12 +53,14 @@ const Home = () => {
 
   const {
     readListBooks,
+    addBooksToReadList,
     addToReadList,
     isSidebarVisible,
     toggleSidebar,
     readingListNewCacheCount,
   } = useElloTalesStore((state) => ({
     readListBooks: state.readListBooks,
+    addBooksToReadList: state.addBooksToReadList,
     addToReadList: state.addToReadList,
     isSidebarVisible: state.isSidebarVisible,
     toggleSidebar: state.toggleSidebar,
@@ -92,7 +94,7 @@ const Home = () => {
   const handleAddBook = async (book: Book) => {
     const { __typename, inReadList, ...bookInput } = book;
     console.log('bookInput', bookInput);
-
+    const oldReadListBooks = readListBooks;
     // Optimistically update the state
     addToReadList(bookInput);
 
@@ -105,9 +107,7 @@ const Home = () => {
       console.error('Error adding book to reading list:', err);
 
       // Revert the optimistic update if the server request fails
-      addToReadList((state: any[]) =>
-        state.filter((b: { title: string; }) => b.title !== bookInput.title)
-      );
+      addBooksToReadList(oldReadListBooks);
     }
   };
 
@@ -140,7 +140,7 @@ const Home = () => {
 
   if (loading && offset === 0) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
-
+  console.log('readListBooks', readListBooks);
   return (
     <MainLayout>
       <Box sx={{ my: 4 }}>

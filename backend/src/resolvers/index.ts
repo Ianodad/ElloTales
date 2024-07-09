@@ -30,7 +30,9 @@ export const resolvers = {
   Mutation: {
     addBookToReadingList: (_parent: unknown, args: { book: Book }) => {
       const { book } = args;
-      console.log(book);
+      if (book === null) {
+        throw new Error('Book cannot be null');
+      }
       const readingList = readReadingListData();
       readingList.push(book);
       writeReadingListData(readingList);
@@ -54,6 +56,11 @@ export const resolvers = {
         console.error('Error deleting book from reading list:', error);
         throw new Error('Unable to delete book from reading list.');
       }
+    },
+    clearReadingList: async () => {
+      // Your logic to clear the reading list data
+      await writeReadingListData([]);
+      return { success: true, message: 'Reading list cleared successfully' };
     },
   },
 };
