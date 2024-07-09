@@ -142,6 +142,9 @@ export const ReadListSidebar = () => {
                     padding: '16px',
                     marginBottom: '8px',
                   }}
+                  sx={{
+                    backgroundColor: 'primary.contrastText',
+                  }}
                   key={index}
                 >
                   <ListItemAvatar>
@@ -159,6 +162,9 @@ export const ReadListSidebar = () => {
                     />
                   </ListItemAvatar>
                   <ListItemText
+                    sx={{
+                      fontWeight: 'bold',
+                    }}
                     primary={book.title}
                     style={{ marginRight: '22px' }}
                   />

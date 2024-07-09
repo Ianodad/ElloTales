@@ -1,14 +1,14 @@
 [
   {
-    "title": "Clever Monster on the Wonder Island",
-    "author": "Jordan Jones",
-    "coverPhotoURL": "assets/image10.webp",
-    "readingLevel": "I"
-  },
-  {
     "title": "Happy Knight and the Magic Spell",
     "author": "Quinn Brown",
     "coverPhotoURL": "assets/image10.webp",
     "readingLevel": "I"
+  },
+  {
+    "title": "Magic Wizard and the Tower of Dreams",
+    "author": "Morgan Jones",
+    "coverPhotoURL": "assets/image4.webp",
+    "readingLevel": "H"
   }
 ]
