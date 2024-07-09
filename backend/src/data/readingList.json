@@ -10,5 +10,35 @@
     "author": "Morgan Jones",
     "coverPhotoURL": "assets/image4.webp",
     "readingLevel": "H"
+  },
+  {
+    "title": "Happy Princess and the Tower of Dreams",
+    "author": "Quinn Miller",
+    "coverPhotoURL": "assets/image9.webp",
+    "readingLevel": "E"
+  },
+  {
+    "title": "Happy Wizard and the Enchanted Garden",
+    "author": "Riley Miller",
+    "coverPhotoURL": "assets/image7.webp",
+    "readingLevel": "A"
+  },
+  {
+    "title": "Big Princess and the Starry Sky",
+    "author": "Casey Johnson",
+    "coverPhotoURL": "assets/image10.webp",
+    "readingLevel": "D"
+  },
+  {
+    "title": "Magic Monster and the Starry Sky",
+    "author": "Riley Williams",
+    "coverPhotoURL": "assets/image5.webp",
+    "readingLevel": "H"
+  },
+  {
+    "title": "Little Pirate and the Tower of Dreams",
+    "author": "Quinn Wilson",
+    "coverPhotoURL": "assets/image7.webp",
+    "readingLevel": "H"
   }
 ]

@@ -69,7 +69,7 @@ const Home = () => {
 
   useEffect(() => {
     if (someBooks) {
-      setBooks(someBooks.books);
+      setBooks((prevBooks) => [...prevBooks, ...someBooks.books]);
     }
   }, [someBooks, readListBooks]);
 
@@ -81,7 +81,9 @@ const Home = () => {
 
   const handleLoadMore = () => {
     setOffset((prevOffset) => prevOffset + 10);
-    loadMoreBooks();
+    loadMoreBooks({
+      variables: { offset: offset + 10, limit: 10, sort: false },
+    });
   };
 
   const handleSearch = () => {
@@ -140,7 +142,7 @@ const Home = () => {
 
   if (loading && offset === 0) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
-  console.log('readListBooks', readListBooks);
+  console.log('books', books);
   return (
     <MainLayout>
       <Box sx={{ my: 4 }}>
