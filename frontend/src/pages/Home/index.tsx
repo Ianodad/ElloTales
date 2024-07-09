@@ -10,7 +10,7 @@ import {
   GET_BOOKS,
   SEARCH_BOOKS,
   ADD_BOOK_TO_READING_LIST,
-} from '@graphql/queries';
+} from '@graphql/index';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import { Box, Button, Grid, IconButton, Badge } from '@mui/material';
 import { Refresh, MoreHoriz } from '@mui/icons-material';
@@ -55,7 +55,6 @@ const Home = () => {
     readListBooks,
     addBooksToReadList,
     addToReadList,
-    isSidebarVisible,
     toggleSidebar,
     readingListNewCacheCount,
   } = useElloTalesStore((state) => ({

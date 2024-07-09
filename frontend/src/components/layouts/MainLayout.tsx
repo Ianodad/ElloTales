@@ -3,9 +3,7 @@ import { Drawer, Button, Box, Container } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import useElloTalesStore from '@store/index';
 import { useQuery } from '@apollo/client';
-import { GET_READING_LIST } from '@/src/graphql/queries';
-import { Book } from '@/src/constants/types';
-import useSidebar from '@/src/hooks/useSIdebar';
+import { GET_READING_LIST } from '@graphql/index';
 
 export const MainLayout = ({ children }) => {
   // const [isSidebarVisible, toggleSidebar] = useSidebar();

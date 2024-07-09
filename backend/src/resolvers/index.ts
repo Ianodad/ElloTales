@@ -53,7 +53,6 @@ export const resolvers = {
 
         return updatedReadingList;
       } catch (error) {
-        console.error('Error deleting book from reading list:', error);
         throw new Error('Unable to delete book from reading list.');
       }
     },

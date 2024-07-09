@@ -16,9 +16,8 @@ import {
 import { Book } from '@/src/constants/types';
 import {
   DELETE_BOOK_FROM_READING_LIST,
-  GET_READING_LIST,
   CLEAR_READING_LIST,
-} from '@/src/graphql/queries';
+} from '@graphql/index';
 import { useMutation } from '@apollo/client';
 import DeleteIcon from '@mui/icons-material/Delete';
 

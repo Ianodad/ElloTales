@@ -6,7 +6,7 @@ import {
   makeVar,
 } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
-import { GET_READING_LIST, resolvers } from '../graphql/queries';
+import { GET_READING_LIST } from '@graphql/index';
 import { Book } from '../constants/types';
 
 const URL = 'http://localhost:4000/';
