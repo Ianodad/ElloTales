@@ -29,6 +29,7 @@
       "@hooks/*": ["./src/hooks/*"],
       "@pages/*": ["./src/pages/*"],
       "@services/*": ["./src/services/*"],
+      "@specific/*": ["./src/components/specific/*"],
       "@src/*": ["./src/*"],
       "@store/*": ["./src/store/*"],
       "@tests/*": ["./src/tests/*"],

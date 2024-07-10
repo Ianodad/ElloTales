@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import {
   MainLayout,
   BookDetailCard,
-  MainHeader,
+  RenderError,
   SearchBar,
+  BookListIcon,
 } from '@components/index';
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
 import {
@@ -11,13 +12,17 @@ import {
   SEARCH_BOOKS,
   ADD_BOOK_TO_READING_LIST,
 } from '@graphql/index';
-import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-import { Box, Button, Grid, IconButton, Badge } from '@mui/material';
-import { Refresh, MoreHoriz } from '@mui/icons-material';
+import {
+  Backdrop,
+  CircularProgress,
+  Box,
+  Grid,
+  IconButton,
+} from '@mui/material';
+import { Refresh } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 
 import { Book } from '@constants/types';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import useElloTalesStore from '@/src/store';
 
@@ -139,11 +144,16 @@ const Home = () => {
     }
   };
 
-  if (loading && offset === 0) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-  console.log('books', books);
+  if (error) return <RenderError error={error} />;
+
   return (
     <MainLayout>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading || loadingMore}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Box sx={{ my: 4 }}>
         <Box
           sx={{
@@ -236,64 +246,3 @@ const Home = () => {
 };
 
 export default Home;
-
-interface BookListIconProps {
-  toggleSidebar: () => void;
-  readingListNewCacheCount: number;
-}
-const BookListIcon = ({
-  toggleSidebar,
-  readingListNewCacheCount,
-}: BookListIconProps) => {
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: '16px',
-        backgroundColor: 'primary.main',
-        width: '60px',
-        height: '60px',
-        marginLeft: '12px',
-        border: '3px solid black',
-        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
-        position: 'relative',
-        cursor: 'pointer',
-        '&:hover': {
-          backgroundColor: 'white',
-          border: '2.8px solid black',
-          borderRadius: '10px',
-          boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.4)',
-          transition: 'background-color 0.2s, box-shadow 0.2s',
-        },
-        '&:hover .bookListButton': {
-          color: 'primary.main',
-          fontSize: '38px',
-          transition: 'color 0.2s, font-size 0.2s',
-        },
-      }}
-    >
-      <IconButton
-        className="bookListButton"
-        onClick={() => toggleSidebar()}
-        sx={{
-          fontSize: '34px',
-          width: '20px',
-          color: 'primary.contrastText',
-        }}
-      >
-        <AutoStoriesIcon fontSize="inherit" />
-      </IconButton>
-      <Badge
-        badgeContent={readingListNewCacheCount}
-        color="secondary"
-        sx={{
-          position: 'absolute',
-          top: 4,
-          right: 4,
-        }}
-      ></Badge>
-    </Box>
-  );
-};

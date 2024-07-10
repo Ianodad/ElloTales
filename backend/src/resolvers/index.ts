@@ -13,6 +13,7 @@ export const resolvers = {
       const sortedData = [...booksData].sort((a, b) =>
         a.title.localeCompare(b.title)
       );
+
       return sort
         ? sortedData.slice(offset, offset + limit)
         : booksData.slice(offset, offset + limit);
