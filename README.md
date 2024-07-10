@@ -22,6 +22,7 @@ This is a book assignment admin-facing UI for a teacher to assign books to stude
 - [Building and running in Docker Compose](#building-and-running-in-docker-compose)
 - [Screenshots](#screenshots)
   - [Home view](#home-view)
+  - [With Read list View](#with-read-list-view)
 - [License](#license)
 - [Contact](#contact)
 
@@ -105,6 +106,8 @@ docker-compose up --build
 ### Home view
 ![Dashboard](screenshots/screenshot-home.png)
 
+### With Read list View
+![Dashboard](screenshots/screenshot-readList.png)
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

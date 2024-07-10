@@ -24,7 +24,9 @@ export const BookDetailCard = ({
   loadingReadList,
   readListBooks,
 }: BookDetailCard) => {
-  const isInReadList = readListBooks?.some((item) => item?.title === book?.title);
+  const isInReadList = readListBooks?.some(
+    (item) => item?.title === book?.title
+  );
   return (
     <Card
       sx={{
@@ -177,9 +179,7 @@ export const BookDetailCard = ({
             }}
           >
             <IconButton
-              // disabled={readListBooks.some(
-              //   (readBook) => readBook.title === book.title
-              // )}
+              disabled={isInReadList}
               aria-label="add to reading list"
               onClick={() => handleAddBook(book)}
               sx={{
@@ -191,6 +191,9 @@ export const BookDetailCard = ({
 
                 // maxWidth: '100%', // Ensure the icon fills the button
                 maxHeight: '50%',
+                '&.Mui-disabled': {
+                  color: 'primary.main', // Customize disabled color
+                },
               }}
             >
               {isInReadList ? (

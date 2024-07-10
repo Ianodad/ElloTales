@@ -5,6 +5,8 @@ import {
   RenderError,
   SearchBar,
   BookListIcon,
+  LoadingBackdrop,
+  InReadListSnackbar,
 } from '@components/index';
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client';
 import {
@@ -12,19 +14,14 @@ import {
   SEARCH_BOOKS,
   ADD_BOOK_TO_READING_LIST,
 } from '@graphql/index';
-import {
-  Backdrop,
-  CircularProgress,
-  Box,
-  Grid,
-  IconButton,
-} from '@mui/material';
+import { Box, Grid, IconButton } from '@mui/material';
 import { Refresh } from '@mui/icons-material';
 import AddIcon from '@mui/icons-material/Add';
 
 import { Book } from '@constants/types';
 
 import useElloTalesStore from '@/src/store';
+import { useSnackbar } from '@/src/hooks/useSnackbar';
 
 const Home = () => {
   const [offset, setOffset] = useState(0);
@@ -33,6 +30,14 @@ const Home = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [triggerSearch, setTriggerSearch] = useState(false);
   // const [isSidebarVisible, toggleSidebar] = useSidebar();
+
+  const {
+    openSnackbar,
+    setOpenSnackbar,
+    alertSeverity,
+    snackbarMessage,
+    showSnackbar,
+  } = useSnackbar();
 
   const {
     loading,
@@ -75,14 +80,15 @@ const Home = () => {
     if (someBooks) {
       setBooks((prevBooks) => [...prevBooks, ...someBooks.books]);
     }
-  }, [someBooks, readListBooks]);
+  }, [someBooks]);
 
   useEffect(() => {
     if (moreBookData) {
       setBooks((prevBooks) => [...prevBooks, ...moreBookData.books]);
     }
-  }, [moreBookData, readListBooks]);
+  }, [moreBookData]);
 
+  // useEffect(() => {}, [readListBooks]);
   const handleLoadMore = () => {
     setOffset((prevOffset) => prevOffset + 10);
     loadMoreBooks({
@@ -100,6 +106,13 @@ const Home = () => {
   const handleAddBook = async (book: Book) => {
     const { __typename, inReadList, ...bookInput } = book;
     const oldReadListBooks = readListBooks;
+
+    // Check if the book is already in the read list
+    if (readListBooks.some((b) => b.title === bookInput.title)) {
+      showSnackbar('This book is already in your reading list.', 'error');
+      return;
+    }
+
     // Optimistically update the state
     addToReadList(bookInput);
 
@@ -107,10 +120,12 @@ const Home = () => {
       await addBookToReadingList({
         variables: { book: bookInput },
       });
+      showSnackbar('Book added to your reading list successfully.', 'success');
     } catch (err) {
       console.error('Error adding book to reading list:', err);
 
       // Revert the optimistic update if the server request fails
+      showSnackbar('Failed to add book to your reading list.', 'error');
       addBooksToReadList(oldReadListBooks);
     }
   };
@@ -146,12 +161,14 @@ const Home = () => {
 
   return (
     <MainLayout>
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading || loadingMore}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <LoadingBackdrop loading={loading} />
+      <InReadListSnackbar
+        open={openSnackbar}
+        setOpenSnackbar={setOpenSnackbar}
+        alertSeverity={alertSeverity}
+        snackbarMessage={snackbarMessage}
+      />
+
       <Box sx={{ my: 4 }}>
         <Box
           sx={{
