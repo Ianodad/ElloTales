@@ -35,6 +35,10 @@ export const resolvers = {
         throw new Error('Book cannot be null');
       }
       const readingList = readReadingListData();
+      if (readingList.some((b) => b.title === book.title)) {
+        console.log('dwddd');
+        return `Book ${book.title} is already in your reading list`;
+      }
       readingList.push(book);
       writeReadingListData(readingList);
       return readingList;

@@ -24,7 +24,7 @@ export const typeDefs = `#graphql
   }
 
   type Mutation {
-  addBookToReadingList(book: BookInput!): [Book!]!
+  addBookToReadingList(book: BookInput!): Book!
   deleteBookFromReadingList(title: String!): [Book!]!
   clearReadingList: ClearReadingListResponse
 }
