@@ -99,16 +99,14 @@ const Home = () => {
 
   const handleAddBook = async (book: Book) => {
     const { __typename, inReadList, ...bookInput } = book;
-    console.log('bookInput', bookInput);
     const oldReadListBooks = readListBooks;
     // Optimistically update the state
     addToReadList(bookInput);
 
     try {
-      const response = await addBookToReadingList({
+      await addBookToReadingList({
         variables: { book: bookInput },
       });
-      console.log('response', response);
     } catch (err) {
       console.error('Error adding book to reading list:', err);
 

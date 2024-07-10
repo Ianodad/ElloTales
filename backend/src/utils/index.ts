@@ -8,7 +8,6 @@ const readingListFilePath = path.join(__dirname, '../data/readingList.json');
 export const readReadingListData = (): Book[] => {
   try {
     const data = fs.readFileSync(readingListFilePath, 'utf8');
-    console.log(data);
     return JSON.parse(data);
   } catch (err) {
     console.error('Error reading reading list data:', err);
@@ -18,7 +17,6 @@ export const readReadingListData = (): Book[] => {
 
 export const writeReadingListData = (data: Book[]): void => {
   try {
-    console.log('book', data);
     fs.writeFileSync(readingListFilePath, JSON.stringify(data, null, 2));
   } catch (err) {
     console.error('Error writing reading list data:', err);
