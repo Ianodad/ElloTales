@@ -9,7 +9,8 @@ import { onError } from '@apollo/client/link/error';
 import { GET_READING_LIST } from '@graphql/index';
 import { Book } from '../constants/types';
 
-const URL = 'http://localhost:4000/';
+const BACKEND_URL =
+  import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000/';
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -28,7 +29,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 // Define the HTTP link for connecting to your GraphQL server
 const httpLink = new HttpLink({
-  uri: URL,
+  uri: BACKEND_URL,
 });
 export const readingListVar = makeVar([]);
 

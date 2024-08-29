@@ -11,6 +11,11 @@ export default defineConfig({
     strictPort: true,
     host: true,
   },
+  define: {
+    'process.env.VITE_BACKEND_URL': JSON.stringify(
+      process.env.VITE_BACKEND_URL
+    ),
+  },
   // base: '/',
   // resolve: {
   //   alias: {
